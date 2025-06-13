@@ -1,2 +1,2 @@
 # BiteBalance
-Diet-based AI-powered planner.
+Welcome to BiteBalance, a diet-based AI-powered planner.
