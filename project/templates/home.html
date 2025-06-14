@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Personalized Diet Planning for <span class="text-warning">Chronic Health Conditions</span>
+                </h1>
+                <p class="lead mb-4">
+                    Get customized Indian diet plans tailored to your health conditions like diabetes, hypertension, and heart disease. 
+                    No more guesswork - just science-based nutrition recommendations.
+                </p>
+                <div class="d-flex gap-3">
+                    {% if not session.user_id %}
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Get Started Free
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-warning btn-lg">
+                        <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <i class="bi bi-heart-pulse display-1 text-warning"></i>
+                    <div class="mt-3">
+                        <h3>300M+ Indians</h3>
+                        <p>suffer from chronic diseases</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">Why Choose HealthyDiet?</h2>
+                <p class="lead text-muted">Bridging the gap between chronic disease management and personalized nutrition</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card h-100 p-4 text-center border rounded-3 shadow-sm">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-clipboard-data display-4 text-primary"></i>
+                    </div>
+                    <h4>Condition-Specific Plans</h4>
+                    <p class="text-muted">
+                        Tailored meal plans for diabetes, hypertension, heart disease, and obesity based on medical guidelines.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card h-100 p-4 text-center border rounded-3 shadow-sm">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-geo-alt display-4 text-success"></i>
+                    </div>
+                    <h4>Indian Cuisine Focus</h4>
+                    <p class="text-muted">
+                        Authentic Indian recipes and ingredients that fit your cultural preferences and local availability.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card h-100 p-4 text-center border rounded-3 shadow-sm">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-shield-check display-4 text-warning"></i>
+                    </div>
+                    <h4>Science-Based</h4>
+                    <p class="text-muted">
+                        Evidence-based recommendations following nutritional guidelines for chronic disease management.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+                <p class="lead text-muted">Simple steps to get your personalized diet plan</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">1</span>
+                </div>
+                <h5>Create Account</h5>
+                <p class="text-muted">Sign up with your basic information</p>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">2</span>
+                </div>
+                <h5>Complete Profile</h5>
+                <p class="text-muted">Add your health conditions and preferences</p>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">3</span>
+                </div>
+                <h5>Generate Plan</h5>
+                <p class="text-muted">Get your personalized diet recommendations</p>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">4</span>
+                </div>
+                <h5>Follow & Track</h5>
+                <p class="text-muted">Implement your plan and track progress</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-primary">300M+</h3>
+                    <p class="text-muted">Indians with chronic diseases</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-success">Limited</h3>
+                    <p class="text-muted">Access to dietitians</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-warning">24/7</h3>
+                    <p class="text-muted">Available support</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-info">Free</h3>
+                    <p class="text-muted">No cost to start</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-3">Ready to Transform Your Health?</h2>
+        <p class="lead mb-4">Join thousands of Indians managing their chronic conditions with personalized nutrition</p>
+        {% if not session.user_id %}
+        <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+            <i class="bi bi-rocket-takeoff me-2"></i>Start Your Journey Today
+        </a>
+        {% else %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-warning btn-lg">
+            <i class="bi bi-speedometer2 me-2"></i>Continue Your Journey
+        </a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - HealthyDiet{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-4">
+                <i class="bi bi-person-circle display-6 text-primary me-3"></i>
+                <div>
+                    <h2 class="mb-0">Health Profile</h2>
+                    <p class="text-muted mb-0">Complete your profile to get personalized diet recommendations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clipboard-data me-2"></i>Personal & Health Information
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST">
+                        <!-- Personal Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary border-bottom pb-2 mb-3">
+                                    <i class="bi bi-person me-1"></i>Personal Information
+                                </h6>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       value="{{ profile.name if profile else '' }}" required>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <label for="age" class="form-label">Age *</label>
+                                <input type="number" class="form-control" id="age" name="age" 
+                                       value="{{ profile.age if profile else '' }}" min="1" max="120" required>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <label for="gender" class="form-label">Gender *</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male" {{ 'selected' if profile and profile.gender == 'Male' else '' }}>Male</option>
+                                    <option value="Female" {{ 'selected' if profile and profile.gender == 'Female' else '' }}>Female</option>
+                                    <option value="Other" {{ 'selected' if profile and profile.gender == 'Other' else '' }}>Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="weight" class="form-label">Weight (kg)</label>
+                                <input type="number" class="form-control" id="weight" name="weight" 
+                                       value="{{ profile.weight if profile else '' }}" step="0.1" min="20" max="300">
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="height" class="form-label">Height (cm)</label>
+                                <input type="number" class="form-control" id="height" name="height" 
+                                       value="{{ profile.height if profile else '' }}" min="100" max="250">
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="activity_level" class="form-label">Activity Level</label>
+                                <select class="form-select" id="activity_level" name="activity_level">
+                                    <option value="Sedentary" {{ 'selected' if profile and profile.activity_level == 'Sedentary' else '' }}>Sedentary (Office job)</option>
+                                    <option value="Light" {{ 'selected' if profile and profile.activity_level == 'Light' else '' }}>Light (Light exercise)</option>
+                                    <option value="Moderate" {{ 'selected' if profile and profile.activity_level == 'Moderate' else '' }}>Moderate (Regular exercise)</option>
+                                    <option value="Active" {{ 'selected' if profile and profile.activity_level == 'Active' else '' }}>Very Active (Intense exercise)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Medical Conditions -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-danger border-bottom pb-2 mb-3">
+                                    <i class="bi bi-heart-pulse me-1"></i>Medical Conditions
+                                </h6>
+                                <p class="text-muted small mb-3">Select all conditions that apply to you:</p>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="diabetes" name="diabetes" 
+                                           {{ 'checked' if profile and 'Diabetes' in profile.medical_conditions else '' }}>
+                                    <label class="form-check-label" for="diabetes">
+                                        <i class="bi bi-droplet text-primary me-1"></i>Diabetes (Type 1 or 2)
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="hypertension" name="hypertension"
+                                           {{ 'checked' if profile and 'Hypertension' in profile.medical_conditions else '' }}>
+                                    <label class="form-check-label" for="hypertension">
+                                        <i class="bi bi-activity text-warning me-1"></i>Hypertension (High BP)
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="heart_disease" name="heart_disease"
+                                           {{ 'checked' if profile and 'Heart Disease' in profile.medical_conditions else '' }}>
+                                    <label class="form-check-label" for="heart_disease">
+                                        <i class="bi bi-heart text-danger me-1"></i>Heart Disease
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="obesity" name="obesity"
+                                           {{ 'checked' if profile and 'Obesity' in profile.medical_conditions else '' }}>
+                                    <label class="form-check-label" for="obesity">
+                                        <i class="bi bi-person text-info me-1"></i>Obesity
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dietary Preferences -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-success border-bottom pb-2 mb-3">
+                                    <i class="bi bi-egg-fried me-1"></i>Dietary Preferences
+                                </h6>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="dietary_preferences" class="form-label">Food Preference</label>
+                                <select class="form-select" id="dietary_preferences" name="dietary_preferences">
+                                    <option value="Vegetarian" {{ 'selected' if profile and profile.dietary_preferences == 'Vegetarian' else '' }}>Vegetarian</option>
+                                    <option value="Non-Vegetarian" {{ 'selected' if profile and profile.dietary_preferences == 'Non-Vegetarian' else '' }}>Non-Vegetarian</option>
+                                    <option value="Vegan" {{ 'selected' if profile and profile.dietary_preferences == 'Vegan' else '' }}>Vegan</option>
+                                    <option value="Eggetarian" {{ 'selected' if profile and profile.dietary_preferences == 'Eggetarian' else '' }}>Eggetarian</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="allergies" class="form-label">Food Allergies</label>
+                                <input type="text" class="form-control" id="allergies" name="allergies" 
+                                       value="{{ profile.allergies if profile else '' }}"
+                                       placeholder="e.g., Nuts, Dairy, Gluten">
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label for="dislikes" class="form-label">Food Dislikes</label>
+                                <textarea class="form-control" id="dislikes" name="dislikes" rows="2" 
+                                          placeholder="List foods you don't like or want to avoid">{{ profile.dislikes if profile else '' }}</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i>Save Profile & Generate Diet Plan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar with tips -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="bi bi-lightbulb me-2"></i>Profile Tips
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="text-primary">
+                            <i class="bi bi-shield-check me-1"></i>Accuracy Matters
+                        </h6>
+                        <p class="small text-muted">
+                            Provide accurate information for the most effective diet recommendations.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-success">
+                            <i class="bi bi-heart-pulse me-1"></i>Medical Conditions
+                        </h6>
+                        <p class="small text-muted">
+                            Select all applicable conditions. Our system will create safe meal plans accordingly.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-warning">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Consult Your Doctor
+                        </h6>
+                        <p class="small text-muted">
+                            Always consult your healthcare provider before making significant dietary changes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            {% if profile %}
+            <div class="card shadow-sm mt-3">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0">
+                        <i class="bi bi-check-circle me-2"></i>Profile Status
+                    </h6>
+                </div>
+                <div class="card-body text-center">
+                    <i class="bi bi-person-check display-4 text-success mb-2"></i>
+                    <h6>Profile Complete!</h6>
+                    <p class="small text-muted mb-3">Last updated: {{ profile.updated_at.strftime('%B %d, %Y') if profile.updated_at else 'Recently' }}</p>
+                    <a href="{{ url_for('generate_plan') }}" class="btn btn-success btn-sm">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Generate New Plan
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
