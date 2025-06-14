@@ -327,16 +327,16 @@ def logout():
     flash('You have been logged out', 'info')
     return redirect(url_for('home'))
 
-from datetime import datetime
+
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     """User profile management"""
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
+
     conn = get_db_connection()
-    
+
     if request.method == 'POST':
         # Get form data
         name = request.form['name']
@@ -345,7 +345,7 @@ def profile():
         weight = request.form.get('weight', '')
         height = request.form.get('height', '')
         activity_level = request.form['activity_level']
-        
+
         # Get checkboxes for medical conditions
         conditions = []
         if request.form.get('diabetes'):
@@ -356,17 +356,17 @@ def profile():
             conditions.append('Heart Disease')
         if request.form.get('obesity'):
             conditions.append('Obesity')
-        
+
         medical_conditions = ', '.join(conditions)
         dietary_preferences = request.form['dietary_preferences']
         allergies = request.form.get('allergies', '')
         dislikes = request.form.get('dislikes', '')
-        
+
         # Validation
         if not name or not age or not gender:
             flash('Name, age, and gender are required', 'error')
             return render_template('profile.html')
-        
+
         try:
             age = int(age)
             if age < 1 or age > 120:
@@ -374,13 +374,13 @@ def profile():
         except ValueError:
             flash('Please enter a valid age', 'error')
             return render_template('profile.html')
-        
+
         # Check if profile exists
         existing_profile = conn.execute(
             'SELECT id FROM user_profiles WHERE user_id = ?',
             (session['user_id'],)
         ).fetchone()
-        
+
         if existing_profile:
             # Update existing profile
             conn.execute('''
@@ -400,13 +400,13 @@ def profile():
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (session['user_id'], name, age, gender, weight, height, activity_level,
                   medical_conditions, dietary_preferences, allergies, dislikes))
-        
+
         conn.commit()
         conn.close()
-        
+
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('dashboard'))
-    
+
     # GET request - show existing profile
     profile_data = conn.execute(
         'SELECT * FROM user_profiles WHERE user_id = ?',
@@ -424,7 +424,12 @@ def profile():
                 except ValueError:
                     profile_data[field] = datetime.strptime(profile_data[field], '%Y-%m-%d')
 
-    return render_template('profile.html', profile=profile_data)
+    # 👉 Add current time (without timezone logic)
+    current_time = datetime.now().time()
+    current_time_str = current_time.strftime('%I:%M:%S %p')
+
+    return render_template('profile.html', profile=profile_data, current_time=current_time_str)
+
 
 
 
@@ -553,12 +558,19 @@ def plan_history():
         plan = dict(row)
         if plan.get('created_at'):
             try:
-                plan['created_at'] = datetime.strptime(plan['created_at'], '%Y-%m-%d')
+                plan['created_at'] = datetime.strptime(plan['created_at'], '%Y-%m-%d %H:%M:%S')
             except ValueError:
-                plan['created_at'] = datetime.strptime(plan['created_at'], '%Y-%m-%d%f')
+                try:
+                    plan['created_at'] = datetime.strptime(plan['created_at'], '%Y-%m-%d %H:%M:%S.%f')
+                except ValueError:
+                    plan['created_at'] = None
         plans.append(plan)
 
-    return render_template('plan_history.html',plan=plan)
+    # 👉 Add current time
+    current_time = datetime.now().time()
+    current_time_str = current_time.strftime('%I:%M:%S %p')
+
+    return render_template('plan_history.html', plans=plans, current_time=current_time_str)
 if __name__ == '__main__':
     # Initialize database
     init_db()

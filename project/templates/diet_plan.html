@@ -12,9 +12,7 @@
                     <h2 class="mb-1">
                         <i class="bi bi-calendar-check text-success me-2"></i>Your Personalized Diet Plan
                     </h2>
-                    <p class="text-muted mb-0">
-                        Generated on {{ plan.created_at.strftime('%B %d, %Y at %I:%M %p') }} for {{ profile.name }}
-                    </p>
+                   
                 </div>
                 <div>
                     <a href="{{ url_for('generate_plan') }}" class="btn btn-success me-2">
