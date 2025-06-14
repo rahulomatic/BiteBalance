@@ -1,0 +1,85 @@
+{
+  "diabetes": {
+    "carb_limit": 45,
+    "fiber_min": 25,
+    "sugar_limit": 25,
+    "recommended_foods": [
+      "whole grains",
+      "lean proteins",
+      "non-starchy vegetables",
+      "legumes",
+      "nuts",
+      "seeds",
+      "low-fat dairy"
+    ],
+    "avoid_foods": [
+      "refined sugars",
+      "white bread",
+      "sugary drinks",
+      "processed foods",
+      "high-sodium foods"
+    ]
+  },
+  "heart_disease": {
+    "sodium_limit": 2300,
+    "saturated_fat_limit": 13,
+    "fiber_min": 25,
+    "recommended_foods": [
+      "fatty fish",
+      "olive oil",
+      "nuts",
+      "whole grains",
+      "fruits",
+      "vegetables",
+      "legumes"
+    ],
+    "avoid_foods": [
+      "trans fats",
+      "processed meats",
+      "high-sodium foods",
+      "refined carbohydrates",
+      "excessive alcohol"
+    ]
+  },
+  "hypertension": {
+    "sodium_limit": 1500,
+    "potassium_min": 3500,
+    "recommended_foods": [
+      "leafy greens",
+      "berries",
+      "bananas",
+      "beets",
+      "oats",
+      "garlic",
+      "fatty fish",
+      "seeds"
+    ],
+    "avoid_foods": [
+      "processed foods",
+      "canned soups",
+      "deli meats",
+      "pizza",
+      "alcohol",
+      "caffeine"
+    ]
+  },
+  "obesity": {
+    "calorie_deficit": 500,
+    "protein_min": 1.2,
+    "recommended_foods": [
+      "lean proteins",
+      "vegetables",
+      "fruits",
+      "whole grains",
+      "legumes",
+      "low-fat dairy"
+    ],
+    "avoid_foods": [
+      "high-calorie drinks",
+      "fried foods",
+      "sweets",
+      "processed snacks",
+      "large portions"
+    ]
+  }
+}
