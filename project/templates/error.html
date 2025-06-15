@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Error - BiteBalance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="error-container">
+                <div class="error-icon mb-4">
+                    <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
+                </div>
+                
+                <h1 class="fw-bold text-dark mb-3">Oops! Something went wrong</h1>
+                
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-x-circle me-2"></i>
+                    <strong>Error:</strong> {{ error }}
+                </div>
+                
+                <p class="text-muted mb-4">
+                    We're sorry for the inconvenience. This error has been logged and our team will investigate.
+                </p>
+                
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="bi bi-house me-2"></i>Go Home
+                    </a>
+                    <a href="{{ url_for('assessment') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Try Again
+                    </a>
+                    <a href="{{ url_for('chat') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-chat-dots me-2"></i>Ask Sabbot
+                    </a>
+                </div>
+                
+                <div class="mt-5">
+                    <h6 class="text-muted mb-3">Common Solutions:</h6>
+                    <ul class="list-unstyled text-start">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            Check that all required fields are filled correctly
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            Ensure your health data is within normal ranges
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            Try refreshing the page and starting over
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            Contact support if the problem persists
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Auto-redirect to home after 30 seconds
+setTimeout(function() {
+    if (confirm('Would you like to return to the home page?')) {
+        window.location.href = "{{ url_for('index') }}";
+    }
+}, 30000);
+
+// Add error reporting
+document.addEventListener('DOMContentLoaded', function() {
+    // Log error for analytics (if implemented)
+    console.error('Application Error:', "{{ error }}");
+    
+    // Add smooth animations
+    const errorContainer = document.querySelector('.error-container');
+    errorContainer.style.opacity = '0';
+    errorContainer.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+        errorContainer.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        errorContainer.style.opacity = '1';
+        errorContainer.style.transform = 'translateY(0)';
+    }, 100);
+});
+</script>
+{% endblock %}
