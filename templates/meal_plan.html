@@ -1,0 +1,530 @@
+{% extends "base.html" %}
+
+{% block title %}Your Personalized Meal Plan - BiteBalance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="text-center mb-4">
+                <h1 class="fw-bold text-primary">
+                    <i class="bi bi-cpu me-3"></i>Your AI-Generated Meal Plan
+                </h1>
+                <p class="lead text-muted">
+                    Personalized nutrition recommendations based on your health profile
+                </p>
+            </div>
+            
+            <!-- Health Summary Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card border-0 bg-primary bg-opacity-10">
+                        <div class="card-body text-center">
+                            <i class="bi bi-speedometer2 text-primary fs-2 mb-2"></i>
+                            <h6 class="fw-bold">BMI</h6>
+                            <div class="fs-5 fw-bold text-primary">{{ "%.1f"|format(user_data.bmi) }}</div>
+                            <small class="text-muted">{{ health_metrics.bmi.category }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card border-0 bg-success bg-opacity-10">
+                        <div class="card-body text-center">
+                            <i class="bi bi-fire text-success fs-2 mb-2"></i>
+                            <h6 class="fw-bold">Daily Calories</h6>
+                            <div class="fs-5 fw-bold text-success">{{ user_data.daily_calories }}</div>
+                            <small class="text-muted">Recommended intake</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card border-0 bg-warning bg-opacity-10">
+                        <div class="card-body text-center">
+                            <i class="bi bi-activity text-warning fs-2 mb-2"></i>
+                            <h6 class="fw-bold">Blood Pressure</h6>
+                            <div class="fs-6 fw-bold text-warning">
+                                {% if user_data.systolic_bp %}
+                                    {{ user_data.systolic_bp }}/{{ user_data.diastolic_bp }}
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">{{ health_metrics.blood_pressure.category if user_data.systolic_bp else 'mmHg' }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card border-0 bg-info bg-opacity-10">
+                        <div class="card-body text-center">
+                            <i class="bi bi-droplet text-info fs-2 mb-2"></i>
+                            <h6 class="fw-bold">Blood Sugar</h6>
+                            <div class="fs-6 fw-bold text-info">
+                                {% if user_data.blood_sugar %}
+                                    {{ user_data.blood_sugar }}
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">{{ health_metrics.blood_sugar.category if user_data.blood_sugar else 'mg/dL' }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meal Plan Tabs -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-pills nav-fill mb-4" id="mealPlanTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="today-tab" data-bs-toggle="pill" data-bs-target="#today" type="button" role="tab">
+                        <i class="bi bi-calendar-day me-2"></i>Today's Plan
+                    </button>
+                </li>
+                
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="nutrition-tab" data-bs-toggle="pill" data-bs-target="#nutrition" type="button" role="tab">
+                        <i class="bi bi-pie-chart me-2"></i>Nutrition Summary
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="mealPlanTabsContent">
+                <!-- Today's Plan -->
+                <div class="tab-pane fade show active" id="today" role="tabpanel">
+                    <div class="row g-4">
+                        <!-- Breakfast -->
+                        <div class="col-lg-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-warning bg-opacity-10 border-0">
+                                    <h5 class="mb-0 text-warning">
+                                        <i class="bi bi-sunrise me-2"></i>Breakfast
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ meal_plan.breakfast.name }}</h6>
+                                    
+                                    <div class="mb-3">
+                                        <h6 class="text-muted small mb-2">INGREDIENTS:</h6>
+                                        {% for category, items in meal_plan.breakfast.ingredients.items() %}
+                                            {% if items %}
+                                                <div class="mb-2">
+                                                    <span class="badge bg-light text-dark me-2">{{ category.title() }}</span>
+                                                    {{ items|join(', ') }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="nutrition-info bg-light p-3 rounded mb-3">
+                                        <div class="row g-2 text-center">
+                                            <div class="col-3">
+                                                <div class="fw-bold text-primary">{{ meal_plan.breakfast.nutrition.calories }}</div>
+                                                <small class="text-muted">Calories</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-success">{{ meal_plan.breakfast.nutrition.protein }}</div>
+                                                <small class="text-muted">Protein</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-warning">{{ meal_plan.breakfast.nutrition.carbohydrates }}</div>
+                                                <small class="text-muted">Carbs</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-info">{{ meal_plan.breakfast.nutrition.fat }}</div>
+                                                <small class="text-muted">Fat</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if meal_plan.breakfast.health_benefits %}
+                                        <div class="health-benefits">
+                                            <h6 class="text-success small mb-2">
+                                                <i class="bi bi-heart me-1"></i>HEALTH BENEFITS:
+                                            </h6>
+                                            <ul class="list-unstyled small">
+                                                {% for benefit in meal_plan.breakfast.health_benefits %}
+                                                    <li><i class="bi bi-check-circle text-success me-2"></i>{{ benefit }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lunch -->
+                        <div class="col-lg-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-primary bg-opacity-10 border-0">
+                                    <h5 class="mb-0 text-primary">
+                                        <i class="bi bi-sun me-2"></i>Lunch
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ meal_plan.lunch.name }}</h6>
+                                    
+                                    <div class="mb-3">
+                                        <h6 class="text-muted small mb-2">INGREDIENTS:</h6>
+                                        {% for category, items in meal_plan.lunch.ingredients.items() %}
+                                            {% if items %}
+                                                <div class="mb-2">
+                                                    <span class="badge bg-light text-dark me-2">{{ category.title() }}</span>
+                                                    {{ items|join(', ') }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="nutrition-info bg-light p-3 rounded mb-3">
+                                        <div class="row g-2 text-center">
+                                            <div class="col-3">
+                                                <div class="fw-bold text-primary">{{ meal_plan.lunch.nutrition.calories }}</div>
+                                                <small class="text-muted">Calories</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-success">{{ meal_plan.lunch.nutrition.protein }}</div>
+                                                <small class="text-muted">Protein</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-warning">{{ meal_plan.lunch.nutrition.carbohydrates }}</div>
+                                                <small class="text-muted">Carbs</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-info">{{ meal_plan.lunch.nutrition.fat }}</div>
+                                                <small class="text-muted">Fat</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if meal_plan.lunch.health_benefits %}
+                                        <div class="health-benefits">
+                                            <h6 class="text-success small mb-2">
+                                                <i class="bi bi-heart me-1"></i>HEALTH BENEFITS:
+                                            </h6>
+                                            <ul class="list-unstyled small">
+                                                {% for benefit in meal_plan.lunch.health_benefits %}
+                                                    <li><i class="bi bi-check-circle text-success me-2"></i>{{ benefit }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dinner -->
+                        <div class="col-lg-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-success bg-opacity-10 border-0">
+                                    <h5 class="mb-0 text-success">
+                                        <i class="bi bi-moon me-2"></i>Dinner
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ meal_plan.dinner.name }}</h6>
+                                    
+                                    <div class="mb-3">
+                                        <h6 class="text-muted small mb-2">INGREDIENTS:</h6>
+                                        {% for category, items in meal_plan.dinner.ingredients.items() %}
+                                            {% if items %}
+                                                <div class="mb-2">
+                                                    <span class="badge bg-light text-dark me-2">{{ category.title() }}</span>
+                                                    {{ items|join(', ') }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="nutrition-info bg-light p-3 rounded mb-3">
+                                        <div class="row g-2 text-center">
+                                            <div class="col-3">
+                                                <div class="fw-bold text-primary">{{ meal_plan.dinner.nutrition.calories }}</div>
+                                                <small class="text-muted">Calories</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-success">{{ meal_plan.dinner.nutrition.protein }}</div>
+                                                <small class="text-muted">Protein</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-warning">{{ meal_plan.dinner.nutrition.carbohydrates }}</div>
+                                                <small class="text-muted">Carbs</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-info">{{ meal_plan.dinner.nutrition.fat }}</div>
+                                                <small class="text-muted">Fat</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if meal_plan.dinner.health_benefits %}
+                                        <div class="health-benefits">
+                                            <h6 class="text-success small mb-2">
+                                                <i class="bi bi-heart me-1"></i>HEALTH BENEFITS:
+                                            </h6>
+                                            <ul class="list-unstyled small">
+                                                {% for benefit in meal_plan.dinner.health_benefits %}
+                                                    <li><i class="bi bi-check-circle text-success me-2"></i>{{ benefit }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Snacks -->
+                        <div class="col-lg-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-info bg-opacity-10 border-0">
+                                    <h5 class="mb-0 text-info">
+                                        <i class="bi bi-cup-straw me-2"></i>Snacks
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ meal_plan.snacks.name }}</h6>
+                                    
+                                    <div class="mb-3">
+                                        <h6 class="text-muted small mb-2">OPTIONS:</h6>
+                                        {% for category, items in meal_plan.snacks.ingredients.items() %}
+                                            {% if items %}
+                                                <div class="mb-2">
+                                                    {% for item in items %}
+                                                        <span class="badge bg-light text-dark me-1 mb-1">{{ item }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="nutrition-info bg-light p-3 rounded mb-3">
+                                        <div class="row g-2 text-center">
+                                            <div class="col-3">
+                                                <div class="fw-bold text-primary">{{ meal_plan.snacks.nutrition.calories }}</div>
+                                                <small class="text-muted">Calories</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-success">{{ meal_plan.snacks.nutrition.protein }}</div>
+                                                <small class="text-muted">Protein</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-warning">{{ meal_plan.snacks.nutrition.carbohydrates }}</div>
+                                                <small class="text-muted">Carbs</small>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="fw-bold text-info">{{ meal_plan.snacks.nutrition.fat }}</div>
+                                                <small class="text-muted">Fat</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if meal_plan.snacks.health_benefits %}
+                                        <div class="health-benefits">
+                                            <h6 class="text-success small mb-2">
+                                                <i class="bi bi-heart me-1"></i>HEALTH BENEFITS:
+                                            </h6>
+                                            <ul class="list-unstyled small">
+                                                {% for benefit in meal_plan.snacks.health_benefits %}
+                                                    <li><i class="bi bi-check-circle text-success me-2"></i>{{ benefit }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Plan -->
+                <div class="tab-pane fade" id="weekly" role="tabpanel">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-calendar-week me-2"></i>7-Day Meal Plan
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Breakfast</th>
+                                            <th>Lunch</th>
+                                            <th>Dinner</th>
+                                            <th>Snack</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if meal_plan.weekly_plan %}
+                                            {% for day, meals in meal_plan.weekly_plan.items() %}
+                                                <tr>
+                                                    <td class="fw-bold">{{ day }}</td>
+                                                    <td>{{ meals.breakfast.name }}</td>
+                                                    <td>{{ meals.lunch.name }}</td>
+                                                    <td>{{ meals.dinner.name }}</td>
+                                                    <td>{{ meals.snacks.name }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nutrition Summary -->
+                <div class="tab-pane fade" id="nutrition" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="bi bi-pie-chart me-2"></i>Daily Nutrition Targets
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    {% if meal_plan.nutrition_summary %}
+                                        <div class="row g-3">
+                                            <div class="col-6">
+                                                <div class="text-center p-3 bg-primary bg-opacity-10 rounded">
+                                                    <div class="fs-4 fw-bold text-primary">{{ meal_plan.nutrition_summary.calories }}</div>
+                                                    <div class="text-muted">Calories</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-center p-3 bg-success bg-opacity-10 rounded">
+                                                    <div class="fs-4 fw-bold text-success">{{ meal_plan.nutrition_summary.protein }}g</div>
+                                                    <div class="text-muted">Protein</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-center p-3 bg-warning bg-opacity-10 rounded">
+                                                    <div class="fs-4 fw-bold text-warning">{{ meal_plan.nutrition_summary.carbs }}g</div>
+                                                    <div class="text-muted">Carbohydrates</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-center p-3 bg-info bg-opacity-10 rounded">
+                                                    <div class="fs-4 fw-bold text-info">{{ meal_plan.nutrition_summary.fat }}g</div>
+                                                    <div class="text-muted">Fat</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-center p-3 bg-secondary bg-opacity-10 rounded">
+                                                    <div class="fs-4 fw-bold text-secondary">{{ meal_plan.nutrition_summary.fiber }}g</div>
+                                                    <div class="text-muted">Fiber</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-center p-3 bg-danger bg-opacity-10 rounded">
+                                                    <div class="fs-4 fw-bold text-danger">{{ meal_plan.nutrition_summary.sodium }}mg</div>
+                                                    <div class="text-muted">Sodium</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0">
+                                        <i class="bi bi-clipboard-check me-2"></i>Health Recommendations
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    {% if user_data.conditions %}
+                                        <h6 class="text-primary mb-3">Based on your health conditions:</h6>
+                                        <ul class="list-unstyled">
+                                            {% for condition in user_data.conditions %}
+                                                <li class="mb-2">
+                                                    <span class="badge bg-primary me-2">{{ condition.title() }}</span>
+                                                    {% if condition == 'diabetes' %}
+                                                        Monitor carbohydrate intake and choose complex carbs
+                                                    {% elif condition == 'heart_disease' %}
+                                                        Focus on omega-3 rich foods and limit saturated fats
+                                                    {% elif condition == 'hypertension' %}
+                                                        Maintain low sodium intake and eat potassium-rich foods
+                                                    {% elif condition == 'obesity' %}
+                                                        Create a moderate calorie deficit with high protein
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    
+                                    <h6 class="text-success mt-4 mb-3">General Guidelines:</h6>
+                                    <ul class="list-unstyled small">
+                                        <li><i class="bi bi-check-circle text-success me-2"></i>Eat regular meals to maintain stable energy</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i>Stay hydrated with 8-10 glasses of water daily</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i>Include physical activity as recommended by your doctor</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i>Monitor portion sizes and eat mindfully</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                
+                <a href="{{ url_for('assessment') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Update Assessment
+                </a>
+                <button class="btn btn-success btn-lg" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>Print Plan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Add smooth transitions for tab switching
+document.addEventListener('DOMContentLoaded', function() {
+    const tabTriggerList = [].slice.call(document.querySelectorAll('#mealPlanTabs button'));
+    tabTriggerList.forEach(function (tabTriggerEl) {
+        tabTriggerEl.addEventListener('shown.bs.tab', function (event) {
+            // Add fade-in animation to active tab content
+            const activeTab = document.querySelector(event.target.getAttribute('data-bs-target'));
+            activeTab.style.opacity = '0';
+            setTimeout(() => {
+                activeTab.style.opacity = '1';
+            }, 50);
+        });
+    });
+});
+
+// Print styles
+const printStyles = `
+    @media print {
+        .navbar, .btn, .nav-pills { display: none !important; }
+        .card { border: 1px solid #ddd !important; }
+        .bg-opacity-10 { background-color: #f8f9fa !important; }
+    }
+`;
+
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = printStyles;
+document.head.appendChild(styleSheet);
+</script>
+{% endblock %}

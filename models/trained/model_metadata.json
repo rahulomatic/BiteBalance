@@ -1,0 +1,21 @@
+{
+  "training_date": "2025-06-15T12:03:46.432358",
+  "model_type": "RandomForestClassifier",
+  "feature_count": 3,
+  "classes": [
+    "balanced",
+    "calcium_rich",
+    "complex_carbs",
+    "dash_diet",
+    "high_fiber",
+    "high_protein",
+    "low_calorie",
+    "low_carb",
+    "low_sodium",
+    "mediterranean",
+    "omega3_rich",
+    "portion_controlled",
+    "potassium_rich",
+    "vitamin_d_rich"
+  ]
+}

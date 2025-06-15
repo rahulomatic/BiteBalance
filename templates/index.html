@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %}BiteBalance - AI-Powered Diet Planning{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row align-items-center min-vh-100 py-5">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Personalized Nutrition with 
+                        <span class="text-warning">AI Intelligence</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        Get medically-informed meal plans tailored to your health conditions. 
+                        Our offline AI system follows WHO, ADA, and AHA guidelines to create 
+                        safe, effective nutrition strategies.
+                    </p>
+                    
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <div class="feature-badge">
+                            <i class="bi bi-shield-check text-success"></i>
+                            <span>100% Offline</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="bi bi-heart-pulse text-danger"></i>
+                            <span>Medical Guidelines</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="bi bi-cpu text-info"></i>
+                            <span>AI-Powered</span>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-buttons">
+                        <a href="{{ url_for('assessment') }}" class="btn btn-warning btn-lg me-3">
+                            <i class="bi bi-clipboard-heart me-2"></i>Start Health Assessment
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="hero-image text-center">
+                    <div class="health-dashboard-preview">
+                        <div class="card bg-white text-dark shadow-lg">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">
+                                    <i class="bi bi-activity me-2"></i>Your Health Dashboard
+                                </h5>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="metric-card bg-success bg-opacity-10 p-3 rounded">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-heart text-success fs-4 me-2"></i>
+                                                <div>
+                                                    <div class="fw-bold">BMI</div>
+                                                    <div class="text-muted small">Normal</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="metric-card bg-info bg-opacity-10 p-3 rounded">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-droplet text-info fs-4 me-2"></i>
+                                                <div>
+                                                    <div class="fw-bold">Blood Sugar</div>
+                                                    <div class="text-muted small">Optimal</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="meal-preview bg-warning bg-opacity-10 p-3 rounded">
+                                            <div class="fw-bold text-warning mb-2">
+                                                <i class="bi bi-egg-fried me-2"></i>Today's Breakfast
+                                            </div>
+                                            <div class="small">Steel Cut Oatmeal with Berries</div>
+                                            <div class="text-muted small">320 cal • 12g protein • Heart-healthy</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Health Conditions Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Specialized Care for Health Conditions</h2>
+            <p class="lead text-muted">Evidence-based nutrition plans for common health challenges</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="condition-card h-100">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="condition-icon bg-primary bg-opacity-10 rounded-circle p-3 mb-3">
+                                <i class="bi bi-droplet-half text-primary fs-1"></i>
+                            </div>
+                            <h5 class="fw-bold">Diabetes</h5>
+                            <p class="text-muted small mb-3">
+                                Carb-controlled meals following ADA guidelines for optimal blood sugar management.
+                            </p>
+                            <ul class="list-unstyled small text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Complex carbohydrates</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>High fiber foods</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Portion control</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="condition-card h-100">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="condition-icon bg-danger bg-opacity-10 rounded-circle p-3 mb-3">
+                                <i class="bi bi-heart-pulse text-danger fs-1"></i>
+                            </div>
+                            <h5 class="fw-bold">Heart Disease</h5>
+                            <p class="text-muted small mb-3">
+                                Mediterranean-style nutrition rich in omega-3s and heart-healthy fats.
+                            </p>
+                            <ul class="list-unstyled small text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Omega-3 fatty acids</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Low sodium</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Antioxidant-rich</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="condition-card h-100">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="condition-icon bg-warning bg-opacity-10 rounded-circle p-3 mb-3">
+                                <i class="bi bi-activity text-warning fs-1"></i>
+                            </div>
+                            <h5 class="fw-bold">Hypertension</h5>
+                            <p class="text-muted small mb-3">
+                                DASH diet principles with potassium-rich foods and minimal sodium.
+                            </p>
+                            <ul class="list-unstyled small text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>DASH diet approach</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Potassium-rich foods</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Minimal sodium</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="condition-card h-100">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="condition-icon bg-success bg-opacity-10 rounded-circle p-3 mb-3">
+                                <i class="bi bi-speedometer2 text-success fs-1"></i>
+                            </div>
+                            <h5 class="fw-bold">Weight Management</h5>
+                            <p class="text-muted small mb-3">
+                                Balanced calorie plans with high protein and nutrient density.
+                            </p>
+                            <ul class="list-unstyled small text-start">
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Calorie optimization</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>High protein</li>
+                                <li><i class="bi bi-check-circle text-success me-2"></i>Sustainable habits</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Advanced AI Technology</h2>
+                <p class="lead mb-4">
+                    Our offline AI system uses machine learning trained on medical guidelines 
+                    to provide personalized recommendations without compromising your privacy.
+                </p>
+                
+                <div class="feature-list">
+                    <div class="feature-item d-flex mb-3">
+                        <div class="feature-icon bg-primary bg-opacity-10 rounded p-2 me-3">
+                            <i class="bi bi-cpu text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Machine Learning Models</h6>
+                            <p class="text-muted small mb-0">
+                                Trained on thousands of health profiles using scikit-learn and XGBoost
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item d-flex mb-3">
+                        <div class="feature-icon bg-success bg-opacity-10 rounded p-2 me-3">
+                            <i class="bi bi-shield-lock text-success"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Complete Privacy</h6>
+                            <p class="text-muted small mb-0">
+                                All processing happens locally - your health data never leaves your device
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item d-flex mb-3">
+                        <div class="feature-icon bg-info bg-opacity-10 rounded p-2 me-3">
+                            <i class="bi bi-chat-dots text-info"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Recommended Health Data</h6>
+                             <p class="text-muted small mb-0">
+                               Dietary recommendations for different conditions
+                            </p>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="ai-visualization">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-4">
+                            <h6 class="text-primary mb-3">
+                                <i class="bi bi-robot me-2"></i>AI Processing Pipeline
+                            </h6>
+                            
+                            <div class="pipeline-step mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="step-number bg-primary text-white rounded-circle">1</div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">Health Data Input</div>
+                                        <div class="text-muted small">Age, conditions, vitals, preferences</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pipeline-step mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="step-number bg-warning text-white rounded-circle">2</div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">AI Analysis</div>
+                                        <div class="text-muted small">Machine learning classification</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pipeline-step mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="step-number bg-success text-white rounded-circle">3</div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">Medical Guidelines</div>
+                                        <div class="text-muted small">WHO, ADA, AHA recommendations</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pipeline-step">
+                                <div class="d-flex align-items-center">
+                                    <div class="step-number bg-info text-white rounded-circle">4</div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">Personalized Plan</div>
+                                        <div class="text-muted small">Custom meal recommendations</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Ready to Transform Your Health?</h2>
+        <p class="lead mb-4">
+            Start your personalized nutrition journey with AI-powered meal planning
+        </p>
+        <a href="{{ url_for('assessment') }}" class="btn btn-warning btn-lg">
+            <i class="bi bi-clipboard-heart me-2"></i>Begin Health Assessment
+        </a>
+           
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Add smooth scrolling and animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate feature cards on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe condition cards
+    document.querySelectorAll('.condition-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}
