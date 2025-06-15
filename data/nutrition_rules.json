@@ -1,0 +1,82 @@
+{
+  "macronutrient_ratios": {
+    "balanced": {
+      "carbs": 0.5,
+      "protein": 0.2,
+      "fat": 0.3
+    },
+    "low_carb": {
+      "carbs": 0.3,
+      "protein": 0.3,
+      "fat": 0.4
+    },
+    "high_protein": {
+      "carbs": 0.4,
+      "protein": 0.35,
+      "fat": 0.25
+    },
+    "mediterranean": {
+      "carbs": 0.45,
+      "protein": 0.2,
+      "fat": 0.35
+    }
+  },
+  "daily_limits": {
+    "sodium_mg": {
+      "normal": 2300,
+      "hypertension": 1500,
+      "heart_disease": 2000
+    },
+    "sugar_g": {
+      "normal": 50,
+      "diabetes": 25,
+      "obesity": 30
+    },
+    "fiber_g": {
+      "minimum": 25,
+      "diabetes": 35,
+      "heart_disease": 30
+    }
+  },
+  "meal_timing": {
+    "diabetes": {
+      "meals_per_day": 6,
+      "carb_distribution": "even",
+      "max_carbs_per_meal": 45
+    },
+    "obesity": {
+      "meals_per_day": 5,
+      "largest_meal": "breakfast",
+      "evening_cutoff": "19:00"
+    }
+  },
+  "food_groups": {
+    "diabetes_friendly": [
+      "non-starchy vegetables",
+      "lean proteins",
+      "whole grains",
+      "legumes",
+      "nuts",
+      "seeds",
+      "low-fat dairy"
+    ],
+    "heart_healthy": [
+      "fatty fish",
+      "olive oil",
+      "nuts",
+      "whole grains",
+      "fruits",
+      "vegetables",
+      "legumes"
+    ],
+    "hypertension_friendly": [
+      "leafy greens",
+      "berries",
+      "bananas",
+      "beets",
+      "oats",
+      "garlic",
+      "low-sodium foods"
+    ]
+  }
+}

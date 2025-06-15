@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+
+{% block title %}Health Assessment - BiteBalance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold text-primary">
+                    <i class="bi bi-clipboard-heart me-3"></i>Health Assessment
+                </h1>
+                <p class="lead text-muted">
+                    Provide your health information to receive personalized AI-powered meal recommendations
+                </p>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- Assessment Form -->
+            <form method="POST" action="{{ url_for('generate_plan') }}" id="assessmentForm" class="needs-validation" novalidate>
+                <!-- Step 1: Basic Information -->
+                <div class="card shadow-sm mb-4 form-step" id="step1">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-person me-2"></i>Step 1: Basic Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="age" class="form-label">Age *</label>
+                                <input type="number" class="form-control" id="age" name="age" min="18" max="100" required>
+                                <div class="invalid-feedback">Please enter a valid age (18-100).</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label">Gender *</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your gender.</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="height" class="form-label">Height (cm) *</label>
+                                <input type="number" class="form-control" id="height" name="height" min="100" max="250" step="0.1" required>
+                                <div class="invalid-feedback">Please enter a valid height in centimeters.</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="weight" class="form-label">Weight (kg) *</label>
+                                <input type="number" class="form-control" id="weight" name="weight" min="30" max="300" step="0.1" required>
+                                <div class="invalid-feedback">Please enter a valid weight in kilograms.</div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="activity_level" class="form-label">Activity Level *</label>
+                                <select class="form-select" id="activity_level" name="activity_level" required>
+                                    <option value="">Select activity level</option>
+                                    <option value="sedentary">Sedentary (little to no exercise)</option>
+                                    <option value="light">Light (light exercise 1-3 days/week)</option>
+                                    <option value="moderate">Moderate (moderate exercise 3-5 days/week)</option>
+                                    <option value="active">Active (hard exercise 6-7 days/week)</option>
+                                    <option value="very_active">Very Active (very hard exercise, physical job)</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your activity level.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                Next <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Health Conditions -->
+                <div class="card shadow-sm mb-4 form-step d-none" id="step2">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="bi bi-heart-pulse me-2"></i>Step 2: Health Conditions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-4">Select any health conditions that apply to you:</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-check condition-check">
+                                    <input class="form-check-input" type="checkbox" value="diabetes" id="diabetes" name="conditions">
+                                    <label class="form-check-label" for="diabetes">
+                                        <div class="condition-card-mini">
+                                            <i class="bi bi-droplet-half text-primary fs-4"></i>
+                                            <div>
+                                                <div class="fw-bold">Diabetes</div>
+                                                <div class="text-muted small">Type 1 or Type 2</div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check condition-check">
+                                    <input class="form-check-input" type="checkbox" value="heart_disease" id="heart_disease" name="conditions">
+                                    <label class="form-check-label" for="heart_disease">
+                                        <div class="condition-card-mini">
+                                            <i class="bi bi-heart-pulse text-danger fs-4"></i>
+                                            <div>
+                                                <div class="fw-bold">Heart Disease</div>
+                                                <div class="text-muted small">Cardiovascular conditions</div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check condition-check">
+                                    <input class="form-check-input" type="checkbox" value="hypertension" id="hypertension" name="conditions">
+                                    <label class="form-check-label" for="hypertension">
+                                        <div class="condition-card-mini">
+                                            <i class="bi bi-activity text-warning fs-4"></i>
+                                            <div>
+                                                <div class="fw-bold">Hypertension</div>
+                                                <div class="text-muted small">High blood pressure</div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check condition-check">
+                                    <input class="form-check-input" type="checkbox" value="obesity" id="obesity" name="conditions">
+                                    <label class="form-check-label" for="obesity">
+                                        <div class="condition-card-mini">
+                                            <i class="bi bi-speedometer2 text-success fs-4"></i>
+                                            <div>
+                                                <div class="fw-bold">Obesity</div>
+                                                <div class="text-muted small">Weight management needed</div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep(1)">
+                                <i class="bi bi-arrow-left me-1"></i> Previous
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="nextStep(3)">
+                                Next <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Vital Signs -->
+                <div class="card shadow-sm mb-4 form-step d-none" id="step3">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-thermometer-half me-2"></i>Step 3: Vital Signs (Optional)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-4">Provide recent measurements if available:</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="systolic_bp" class="form-label">
+                                    Systolic Blood Pressure
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" title="Top number in blood pressure reading"></i>
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="systolic_bp" name="systolic_bp" min="80" max="200">
+                                    <span class="input-group-text">mmHg</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="diastolic_bp" class="form-label">
+                                    Diastolic Blood Pressure
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" title="Bottom number in blood pressure reading"></i>
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="diastolic_bp" name="diastolic_bp" min="40" max="120">
+                                    <span class="input-group-text">mmHg</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="blood_sugar" class="form-label">
+                                    Fasting Blood Sugar
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" title="Blood glucose level after 8+ hours of fasting"></i>
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="blood_sugar" name="blood_sugar" min="50" max="400" step="0.1">
+                                    <span class="input-group-text">mg/dL</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep(2)">
+                                <i class="bi bi-arrow-left me-1"></i> Previous
+                            </button>
+                            <button type="button" class="btn btn-info" onclick="nextStep(4)">
+                                Next <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Dietary Preferences -->
+                <div class="card shadow-sm mb-4 form-step d-none" id="step4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-egg-fried me-2"></i>Step 4: Dietary Preferences
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Dietary Restrictions/Preferences:</label>
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="vegetarian" id="vegetarian" name="dietary_preferences">
+                                            <label class="form-check-label" for="vegetarian">Vegetarian</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="vegan" id="vegan" name="dietary_preferences">
+                                            <label class="form-check-label" for="vegan">Vegan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="gluten_free" id="gluten_free" name="dietary_preferences">
+                                            <label class="form-check-label" for="gluten_free">Gluten-Free</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="dairy_free" id="dairy_free" name="dietary_preferences">
+                                            <label class="form-check-label" for="dairy_free">Dairy-Free</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="low_carb" id="low_carb" name="dietary_preferences">
+                                            <label class="form-check-label" for="low_carb">Low Carb</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="mediterranean" id="mediterranean" name="dietary_preferences">
+                                            <label class="form-check-label" for="mediterranean">Mediterranean</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="allergies" class="form-label">Food Allergies (comma-separated):</label>
+                                <input type="text" class="form-control" id="allergies" name="allergies" 
+                                       placeholder="e.g., nuts, shellfish, eggs" required>
+                                <div class="form-text">In case you don't have food allergies, do make sure to type in ' none ' or ' n </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep(3)">
+                                <i class="bi bi-arrow-left me-1"></i> Previous
+                            </button>
+                            <button type="submit" class="btn btn-success btn-lg" id="submitBtn">
+                                <i class="bi bi-cpu me-2"></i>Generate AI Meal Plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let currentStep = 1;
+const totalSteps = 4;
+
+function updateProgress() {
+    const progress = (currentStep / totalSteps) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function nextStep(step) {
+    // Validate current step
+    if (!validateStep(currentStep)) {
+        return;
+    }
+    
+    // Hide current step
+    document.getElementById(`step${currentStep}`).classList.add('d-none');
+    
+    // Show next step
+    document.getElementById(`step${step}`).classList.remove('d-none');
+    
+    currentStep = step;
+    updateProgress();
+    
+    // Scroll to top of form
+    document.getElementById(`step${step}`).scrollIntoView({ behavior: 'smooth' });
+}
+
+function prevStep(step) {
+    // Hide current step
+    document.getElementById(`step${currentStep}`).classList.add('d-none');
+    
+    // Show previous step
+    document.getElementById(`step${step}`).classList.remove('d-none');
+    
+    currentStep = step;
+    updateProgress();
+    
+    // Scroll to top of form
+    document.getElementById(`step${step}`).scrollIntoView({ behavior: 'smooth' });
+}
+
+function validateStep(step) {
+    const stepElement = document.getElementById(`step${step}`);
+    const requiredFields = stepElement.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+        }
+    });
+    
+    return isValid;
+}
+
+// Real-time BMI calculation
+function calculateBMI() {
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    
+    if (height && weight) {
+        const bmi = weight / ((height / 100) ** 2);
+        const bmiDisplay = document.getElementById('bmiDisplay');
+        
+        if (bmiDisplay) {
+            bmiDisplay.textContent = `BMI: ${bmi.toFixed(1)}`;
+            
+            let category = '';
+            if (bmi < 18.5) category = 'Underweight';
+            else if (bmi < 25) category = 'Normal';
+            else if (bmi < 30) category = 'Overweight';
+            else category = 'Obese';
+            
+            bmiDisplay.textContent += ` (${category})`;
+        }
+    }
+}
+
+// Add BMI display
+document.addEventListener('DOMContentLoaded', function() {
+    const weightField = document.getElementById('weight');
+    const heightField = document.getElementById('height');
+    
+    // Add BMI display element
+    const bmiDisplay = document.createElement('div');
+    bmiDisplay.id = 'bmiDisplay';
+    bmiDisplay.className = 'text-muted small mt-2';
+    weightField.parentNode.appendChild(bmiDisplay);
+    
+    // Add event listeners
+    weightField.addEventListener('input', calculateBMI);
+    heightField.addEventListener('input', calculateBMI);
+    
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Form submission
+    document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+        if (!validateStep(4)) {
+            e.preventDefault();
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Plan...';
+        submitBtn.disabled = true;
+    });
+    
+    // Initialize progress
+    updateProgress();
+});
+</script>
+{% endblock %}
